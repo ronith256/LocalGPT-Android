@@ -28,6 +28,9 @@
 | LG G8X     | SD 855      | 6 GB  | Did not run      | NaN                     |
 | Xiaomi Poco F5    | SD 7+Gen2      | 8 GB | 7 seconds       | 5 seconds                     |
 
+## Demo
+- [Demo Video](demo.mp4) or https://youtube.com/shorts/J7DJ-40Uy1k?feature=share
+
 ## Notes
 - It is very much buggy. I haven't tested it much.
 - You'll need a good device to run this.
