@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_chat">#212121</color>
+    <color name="text_gray">#B3B3B3</color>
+    <color name="text_black">#FFFFFF</color>
+    <color name="outline_gray">#858585</color>
+    <color name="black">#000000</color>
+    <color name="text_login">@color/white</color>
+    <color name="consent_bg">@color/black</color>
+    <color name="background_color">#272727</color>
+</resources>
