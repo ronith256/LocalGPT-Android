@@ -31,9 +31,17 @@
 ## Demo
 - [Demo Video](demo.mp4) or https://youtube.com/shorts/J7DJ-40Uy1k?feature=share
 
+## TODO
+- [x] Add very basic chat support
+- [ ] Reduce the size of the model
+- [ ] Fix UI issues
+
 ## Notes
 - It is very much buggy. I haven't tested it much.
 - You'll need a good device to run this.
+- Response initiation time and RAM usage for Chat Completion increases with the number of messages.
+  - This is because Chat Completion is using Text Completion, and with every message the prompt size increases.
+  - This could be fixed by training the model with Chat model in mind. I'm looking into this.
 
 ## Credits
 - nomic-AI
