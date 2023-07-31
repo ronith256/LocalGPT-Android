@@ -9,6 +9,7 @@
     <color name="consent_bg">#D8FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg_chat">@color/white</color>
+    <color name="buttons_color">#FFBBC8</color>
     <color name="text_gray">#8F8F8F</color>
     <color name="text_black">#000000</color>
     <color name="outline_gray">#CCCCCC</color>

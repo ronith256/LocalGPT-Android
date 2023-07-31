@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="bg_chat">#212121</color>
+    <color name="buttons_color">#303030</color>
     <color name="text_gray">#B3B3B3</color>
     <color name="text_black">#FFFFFF</color>
     <color name="outline_gray">#858585</color>

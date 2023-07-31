@@ -27,6 +27,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +54,7 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -80,6 +83,11 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
     private long model;
     private int ctxSize;
 
+    private boolean isChat = true;
+    private StringBuilder builder;
+
+    private String response = "";
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -103,6 +111,10 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
             dialog.show(getSupportFragmentManager(), "SettingsDialogFragment");
         });
 
+        if(isChat){
+            builder = new StringBuilder();
+        }
+
         mChatList = (List<Chat>) getIntent().getSerializableExtra("chatList");
         int s = getIntent().getIntExtra("chat", 0);
         System.out.println(s);
@@ -112,6 +124,12 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
         messageArray = new JSONArray();
 
         loadChatList(chatFile);
+
+        CardView buttonsView = findViewById(R.id.buttonsView);
+        AppCompatButton chatButton = findViewById(R.id.chatButton);
+        AppCompatButton completionButton = findViewById(R.id.textButton);
+        chatButton.setOnClickListener(e->{buttonsView.setVisibility(View.GONE);});
+        completionButton.setOnClickListener(e->{isChat = false; buttonsView.setVisibility(View.GONE);});
 
 
         recyclerView = findViewById(R.id.recycler_view);
@@ -127,6 +145,7 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
         recyclerView.setLayoutManager(llm);
 
         sendButton.setOnClickListener((v) -> {
+            buttonsView.setVisibility(View.GONE);
             MainActivity.createEmptyTextFile();
             String question = messageEditText.getText().toString().trim();
             addToChat(question, Message.SENT_BY_ME);
@@ -218,8 +237,19 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
 
     private void sendConvoMessage(String message) {
         addResponse("", false);
-        sendMessage(message);
-
+        ctxSize =  getSharedPreferences("nums", MODE_PRIVATE).getInt("ctx-size", 2048);
+        if(isChat && !(builder.length() >1)){
+            String chatStuff = "Human: [Usermessage]\nAI: [Assistant response]\n\nHuman: ";
+            message = chatStuff + message + "\n\nAI:";
+            builder.append(message);
+        } else {
+            builder.append(" ");
+            builder.append(response);
+            builder.append("\n\nHuman: ");
+            builder.append(message);
+            builder.append("\n\nAI:");
+        }
+        sendMessage(builder.toString());
     }
 
 
@@ -231,15 +261,10 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
         new Thread(new Runnable() {
            @Override
            public void run() {
-               MainActivity.prompt(model, finalSMessage, 4096);
+               MainActivity.prompt(model, finalSMessage, ctxSize);
            }
        }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                watchFileForChanges();
-            }
-        }).start();
+        new Thread(() -> watchFileForChanges()).start();
     }
 
     private void addMessage(String text, boolean done){
@@ -259,6 +284,7 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
                 saveChatList("chat_list.ser", mChatList);
             }).start();
         } else {
+            response = text;
             messageList.get(messageList.size() - 1).message = text;
             runOnUiThread(() -> messageAdapter.notifyItemChanged(messageList.size() - 1));
         }
@@ -319,9 +345,10 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
                         if(content.length() > builder.length()) {
                             builder = content;
                             time = System.currentTimeMillis();
-                            if (content.contains("[DONE]")) {
+                            if (isChat && content.contains("Human:")) {
                                 addMessage(content, true);
-                                System.out.println("done");
+                                return;
+//                                System.out.println("done");
                             }
                             addMessage(content, false);
                         }
@@ -333,10 +360,10 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
                     break;
                 }
 
-                if(System.currentTimeMillis()-time > 1000){
-                    addMessage("", true);
-                    break;
-                }
+//                if(System.currentTimeMillis()-time > 1000){
+//                    addMessage("", true);
+//                    break;
+//                }
             }
         } catch (IOException e) {
             e.printStackTrace();
