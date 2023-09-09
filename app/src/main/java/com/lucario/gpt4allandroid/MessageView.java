@@ -137,7 +137,7 @@ public class MessageView extends AppCompatActivity implements MessageAdapter.Mes
         sendButton = findViewById(R.id.send_btn);
 
         //setup recycler view
-        messageAdapter = new MessageAdapter(messageList, this);
+        messageAdapter = new MessageAdapter(messageList, this, this);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.getItemAnimator().setChangeDuration(0);
         LinearLayoutManager llm = new LinearLayoutManager(this);

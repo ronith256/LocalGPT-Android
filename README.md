@@ -21,13 +21,13 @@
 - You can start chatting
 
 ## Benchmarks
-| Device Name     | SoC       | RAM   | Model Load Time | Average Response Initiation Time |
-|-----------------|-----------|-------|-----------------|----------------------------------|
+| Device Name     | SoC        | RAM   | Model Load Time | Average Response Initiation Time |
+|-----------------|------------|-------|-----------------|----------------------------------|
 | iQoo 11         | SD 8 Gen 2 | 16 GB | 4 seconds       | 2 seconds                        |
-| Galaxy S21 Plus | SD 888    | 8 GB  | 7 seconds       | 6 seconds                        |
-| LG G8X          | SD 855    | 6 GB  | Did not run     | NaN                              |
-| Xiaomi Poco F5  | SD 7+Gen2 | 8 GB  | 7 seconds       | 5 seconds                        |
-| Pixel 6 Pro     | Tensor    | 12 GB | 5 seconds       | 5 seconds                        |
+| Galaxy S21 Plus | SD 888     | 8 GB  | 7 seconds       | 6 seconds                        |
+| LG G8X          | SD 855     | 6 GB  | Did not run     | NaN                              |
+| Xiaomi Poco F5  | SD 7+Gen2  | 8 GB  | 7 seconds       | 5 seconds                        |
+| Pixel 6 Pro     | Tensor     | 12 GB | 5 seconds       | 5 seconds                        |
 
 ## Demo
 - [Demo Video](demo.mp4) or https://youtube.com/shorts/J7DJ-40Uy1k?feature=share

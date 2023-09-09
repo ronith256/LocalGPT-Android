@@ -1,5 +1,8 @@
 package com.lucario.gpt4allandroid;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +18,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     List<Message> messageList;
     MessageDoneListener listener;
-    public MessageAdapter(List<Message> messageList, MessageDoneListener listener) {
+    Context context;
+
+    ClipboardManager clipboardManager;
+    public MessageAdapter(List<Message> messageList, MessageDoneListener listener, Context context) {
         this.messageList = messageList;
         this.listener = listener;
+        this.context = context;
+        this.clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @NonNull
@@ -31,6 +39,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Message message = messageList.get(position);
+
+        holder.rightTextView.setOnLongClickListener(e->{
+            copyToClipboard(holder.rightTextView.getText().toString());
+            return true;
+        });
+
+        holder.leftTextView.setOnLongClickListener(e->{
+            copyToClipboard(holder.leftTextView.getText().toString());
+            return true;
+        });
+
         if (message.getSentBy().equals(Message.SENT_BY_ME)) {
             holder.leftChatView.setVisibility(View.GONE);
             holder.rightChatView.setVisibility(View.VISIBLE);
@@ -44,6 +63,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 holder.leftTextView.setText(message.getMessage());
             }
         }
+    }
+
+    private void copyToClipboard(String text) {
+        ClipData clip = ClipData.newPlainText("Copied Text", text);
+        clipboardManager.setPrimaryClip(clip);
     }
 
     @Override
