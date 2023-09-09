@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,11 +43,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.rightTextView.setOnLongClickListener(e->{
             copyToClipboard(holder.rightTextView.getText().toString());
+            Toast.makeText(context, "Copied Text", Toast.LENGTH_SHORT).show();
             return true;
         });
 
         holder.leftTextView.setOnLongClickListener(e->{
             copyToClipboard(holder.leftTextView.getText().toString());
+            Toast.makeText(context, "Copied Text", Toast.LENGTH_SHORT).show();
             return true;
         });
 
